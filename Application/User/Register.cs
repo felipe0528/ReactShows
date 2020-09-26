@@ -16,7 +16,7 @@ namespace Application.User
 {
     public class Register
     {
-        public class Command : IRequest<User>
+        public class Command : IRequest<UserTokenDTO>
         {
             public string Email { get; set; }
             public string Password { get; set; }
@@ -30,7 +30,7 @@ namespace Application.User
             }
         }
 
-        public class Handler : IRequestHandler<Command, User>
+        public class Handler : IRequestHandler<Command, UserTokenDTO>
         {
             private readonly DataContext _context;
             private readonly UserManager<AppUser> _userManager;
@@ -43,7 +43,7 @@ namespace Application.User
                 _context = context;
             }
 
-            public async Task<User> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<UserTokenDTO> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (await _context.Users.AnyAsync(x => x.Email == request.Email))
                     throw new RestException(HttpStatusCode.BadRequest, new { Email = "Email already exists" });
@@ -59,7 +59,7 @@ namespace Application.User
                 if (result.Succeeded)
                 {
                     _userManager.AddToRoleAsync(user, "User").Wait();
-                    return new User
+                    return new UserTokenDTO
                     {
                         Token = _jwtGenerator.CreateToken(user),
                         Username = user.UserName

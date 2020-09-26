@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Application.Interfaces;
+using Infrastructure.Security;
 
 namespace API
 {
@@ -45,22 +47,24 @@ namespace API
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
             identityBuilder.AddDefaultTokenProviders();
 
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    // anonim otantikasyonu engellemek için
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("fewfewfwef#$")),
-                    ValidIssuer = "Issuer",
-                    ValidateIssuer = true,
+                    IssuerSigningKey = key,
+                    ValidateIssuer = false,
                     ValidateAudience = false
                 };
             });
+
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
         }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             RoleManager<IdentityRole> roleManager,
             UserManager<AppUser> userManager,
             DataContext db)
@@ -73,6 +77,8 @@ namespace API
             //app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            //usecors
 
             app.UseAuthentication();
             app.UseAuthorization();

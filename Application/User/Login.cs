@@ -1,4 +1,5 @@
 ﻿using Application.Errors;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -32,8 +33,10 @@ namespace Application.User
         {
             private readonly UserManager<AppUser> _userManager;
             private readonly SignInManager<AppUser> _signInManager;
+            private readonly IJwtGenerator _jwtGenerator;
             public Handler(UserManager<AppUser> userManager,
-                SignInManager<AppUser> signInManager)
+                SignInManager<AppUser> signInManager,
+                IJwtGenerator jwtGenerator)
             {
                 _signInManager = signInManager;
                 _userManager = userManager;
@@ -55,7 +58,7 @@ namespace Application.User
                     // TODO: generate token
                     return new User
                     {
-                        Token = "Token",
+                        Token = _jwtGenerator.CreateToken(user),
                         Username = user.UserName
                     };
                 }

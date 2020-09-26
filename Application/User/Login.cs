@@ -40,6 +40,7 @@ namespace Application.User
             {
                 _signInManager = signInManager;
                 _userManager = userManager;
+                _jwtGenerator = jwtGenerator;
             }
 
             public async Task<User> Handle(Query request,

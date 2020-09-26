@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,6 +13,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Application.Interfaces;
 using Infrastructure.Security;
+using Application.User;
+using MediatR;
 
 namespace API
 {
@@ -39,6 +35,7 @@ namespace API
                    Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
+            services.AddMediatR(typeof(Register.Handler).Assembly);
 
             IdentityBuilder builder = services.AddIdentityCore<AppUser>()
                 .AddRoles<IdentityRole>();
@@ -69,6 +66,7 @@ namespace API
             UserManager<AppUser> userManager,
             DataContext db)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -79,7 +77,8 @@ namespace API
             app.UseRouting();
 
             //usecors
-
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -87,7 +86,7 @@ namespace API
             {
                 endpoints.MapControllers();
             });
-
+            
             Seed.SeedDataAsync(db,roleManager,userManager).Wait();
         }
     }

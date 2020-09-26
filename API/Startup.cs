@@ -38,10 +38,12 @@ namespace API
 
             services.AddControllers();
 
-            IdentityBuilder builder = services.AddIdentityCore<AppUser>();
+            IdentityBuilder builder = services.AddIdentityCore<AppUser>()
+                .AddRoles<IdentityRole>();
             var identityBuilder = new IdentityBuilder(builder.UserType,typeof(IdentityRole), builder.Services);
             identityBuilder.AddEntityFrameworkStores<DataContext>();
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
+            identityBuilder.AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -58,7 +60,10 @@ namespace API
         }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            RoleManager<IdentityRole> roleManager,
+            UserManager<AppUser> userManager,
+            DataContext db)
         {
             if (env.IsDevelopment())
             {
@@ -72,12 +77,12 @@ namespace API
 
             app.UseRouting();
 
-
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            Seed.SeedDataAsync(db,roleManager,userManager).Wait();
         }
     }
 }

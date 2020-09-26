@@ -50,7 +50,6 @@ namespace Persistence
                     await userManager.ConfirmEmailAsync(user, code);
                 }
             }
-
         }
     }
 }

@@ -61,7 +61,7 @@ namespace Application.User
                     _userManager.AddToRoleAsync(user, "User").Wait();
                     return new UserTokenDTO
                     {
-                        Token = _jwtGenerator.CreateToken(user),
+                        Token = _jwtGenerator.CreateToken(user, "User"),
                         Username = user.UserName
                     };
                 }

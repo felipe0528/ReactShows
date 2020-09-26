@@ -1,22 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Domain
 {
     public class Schedule
     {
+        public int Id { get; set; }
         public string time { get; set; }
+        [NotMapped]
         public List<string> days { get; set; }
+        public List<DayObject> daysOfWeek { get; set; }
+    }
+
+    public class DayObject
+    {
+        public int Id { get; set; }
+        public DayOfWeek day { get; set; }
     }
 
     public class Rating
     {
-        public object average { get; set; }
+        public double average { get; set; }
     }
 
     public class Country
     {
+        public int Id { get; set; }
         public string name { get; set; }
         public string code { get; set; }
         public string timezone { get; set; }
@@ -38,26 +49,23 @@ namespace Domain
 
     public class Self
     {
+        public int Id { get; set; }
         public string href { get; set; }
     }
 
     public class Previousepisode
     {
+        public int Id { get; set; }
         public string href { get; set; }
     }
 
     public class Nextepisode
     {
+        public int Id { get; set; }
         public string href { get; set; }
     }
 
-    public class Links
-    {
-        public Self self { get; set; }
-        public Previousepisode previousepisode { get; set; }
-        public Nextepisode nextepisode { get; set; }
-    }
-
+    
     public class Show
     {
         public int id { get; set; }
@@ -65,20 +73,41 @@ namespace Domain
         public string name { get; set; }
         public string type { get; set; }
         public string language { get; set; }
-        public List<object> genres { get; set; }
+
+        [NotMapped]
+        public List<string> genres { get; set; }
+
+        public List<Genere> genresObject { get; set; }
         public string status { get; set; }
         public int runtime { get; set; }
         public string premiered { get; set; }
-        public object officialSite { get; set; }
+        public string officialSite { get; set; }
         public Schedule schedule { get; set; }
+
+        [NotMapped]
         public Rating rating { get; set; }
+        public double ratingValue { get; set; }
         public int weight { get; set; }
         public Network network { get; set; }
-        public object webChannel { get; set; }
+        public string webChannel { get; set; }
+
+        [NotMapped]
         public Externals externals { get; set; }
-        public object image { get; set; }
+        public Image image { get; set; }
         public string summary { get; set; }
         public int updated { get; set; }
-        public Links _links { get; set; }
+    }
+
+    public class Genere
+    {
+        public int Id { get; set; }
+        public string genereName { get; set; }
+    }
+
+    public class Image
+    {
+        public int Id { get; set; }
+        public string medium { get; set; }
+        public string original { get; set; }
     }
 }

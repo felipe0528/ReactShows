@@ -1,9 +1,12 @@
-﻿using Application.Interfaces;
+﻿using Application.Errors;
+using Application.Interfaces;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,10 +33,15 @@ namespace Application.User
             {
                 var user = await _userManager.FindByNameAsync(_userAccessor.GetCurrentUsername());
 
+                if (user == null)
+                    throw new RestException(HttpStatusCode.Unauthorized);
+
+                var roles = await _userManager.GetRolesAsync(user);
+
                 return new UserTokenDTO
                 {
                     Username = user.UserName,
-                    Token = _jwtGenerator.CreateToken(user)
+                    Token = _jwtGenerator.CreateToken(user, roles.FirstOrDefault())
                 };
             }
         }

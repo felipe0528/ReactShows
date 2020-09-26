@@ -12,6 +12,8 @@ namespace Persistence
         {
         }
 
+        public DbSet<Show> Shows { get;  set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

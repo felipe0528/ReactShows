@@ -6,6 +6,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -57,10 +58,11 @@ namespace Application.User
 
                 if (result.Succeeded)
                 {
+                    var roles = await _userManager.GetRolesAsync(user);
                     // TODO: generate token
                     return new UserTokenDTO
                     {
-                        Token = _jwtGenerator.CreateToken(user),
+                        Token = _jwtGenerator.CreateToken(user, roles.FirstOrDefault()),
                         Username = user.UserName
                     };
                 }

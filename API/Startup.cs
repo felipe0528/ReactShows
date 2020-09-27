@@ -15,6 +15,7 @@ using Application.Interfaces;
 using Infrastructure.Security;
 using Application.User;
 using MediatR;
+using Infrastructure.Shows;
 
 namespace API
 {
@@ -58,13 +59,14 @@ namespace API
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddScoped<IShowsRepository, ShowsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             RoleManager<IdentityRole> roleManager,
             UserManager<AppUser> userManager,
-            DataContext db)
+            DataContext db, IShowsRepository showRepo)
         {
 
             if (env.IsDevelopment())
@@ -88,6 +90,8 @@ namespace API
             });
             
             Seed.SeedDataAsync(db,roleManager,userManager).Wait();
+
+            //ShowScraper.ScrapAsync(showRepo).Wait();
         }
     }
 }

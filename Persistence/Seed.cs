@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Persistence
 {
     public class Seed
     {
-        public static async System.Threading.Tasks.Task SeedDataAsync(DataContext ctx,
+        public static async Task SeedDataAsync(DataContext ctx,
             RoleManager<IdentityRole> roleManager,
             UserManager<AppUser> userManager)
         {
@@ -27,7 +28,6 @@ namespace Persistence
                 };
                 var resultAdmin = roleManager.CreateAsync(roleAdmin).Result;
             }
-
 
             //SEED ADMIN
             string adminEmail = "admin@reactshows.com";

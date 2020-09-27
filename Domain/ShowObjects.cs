@@ -17,12 +17,12 @@ namespace Domain
     public class DayObject
     {
         public int Id { get; set; }
-        public DayOfWeek day { get; set; }
+        public string day { get; set; }
     }
 
     public class Rating
     {
-        public double average { get; set; }
+        public double? average { get; set; }
     }
 
     public class Country
@@ -69,33 +69,69 @@ namespace Domain
     public class Show
     {
         public int id { get; set; }
+        public int idSite { get; set; }
         public string url { get; set; }
         public string name { get; set; }
         public string type { get; set; }
         public string language { get; set; }
-
         [NotMapped]
         public List<string> genres { get; set; }
-
         public List<Genere> genresObject { get; set; }
         public string status { get; set; }
-        public int runtime { get; set; }
+        public int? runtime { get; set; }
         public string premiered { get; set; }
         public string officialSite { get; set; }
         public Schedule schedule { get; set; }
-
         [NotMapped]
         public Rating rating { get; set; }
-        public double ratingValue { get; set; }
-        public int weight { get; set; }
+        public double? ratingValue { get; set; }
+        public int? weight { get; set; }
         public Network network { get; set; }
-        public string webChannel { get; set; }
-
+        //public string? webChannel { get; set; }
         [NotMapped]
         public Externals externals { get; set; }
         public Image image { get; set; }
         public string summary { get; set; }
-        public int updated { get; set; }
+        public int? updated { get; set; }
+        [NotMapped]
+        public List<Season> seasons { get; set; }
+        [NotMapped]
+        public List<Actor> cast { get; set; }
+    }
+
+    public class Season
+    {
+        public int seasonNumber { get; set; }
+        public List<Episode> Episodes { get; set; }
+    }
+
+    public class Episode
+    {
+        public int id { get; set; }
+        public string url { get; set; }
+        public string name { get; set; }
+        public int season { get; set; }
+        public int number { get; set; }
+    }
+
+    public class Actor
+    {
+        public Person person { get; set; }
+        public Character character { get; set; }
+    }
+
+    public class Character
+    {
+        public int id { get; set; }
+        public string url { get; set; }
+        public string name { get; set; }
+    }
+
+    public class Person
+    {
+        public int id { get; set; }
+        public string url { get; set; }
+        public string name { get; set; }
     }
 
     public class Genere

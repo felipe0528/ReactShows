@@ -60,6 +60,7 @@ namespace Infrastructure.Shows
         {
             var queryable = _db.Shows.Include(x=>x.genresObject)
                 .Include(x=>x.schedule).ThenInclude(x=>x.daysOfWeek).Include(x=>x.image)
+                .Include(x=>x.network)
                 .Where(x=> String.IsNullOrEmpty(keywords) ? true : x.summary.Contains(keywords))
                 .Where(x=> String.IsNullOrEmpty(language) ? true : x.language.Contains(language))
                 .Where(x=> String.IsNullOrEmpty(genere) ? true : x.genresObject.Any(y=>y.genereName.Contains(genere)))

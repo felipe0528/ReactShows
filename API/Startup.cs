@@ -36,6 +36,20 @@ namespace API
                    Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
+
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .WithExposedHeaders("WWW-Authenticate")
+                        .WithOrigins("http://localhost:3000")
+                        .AllowCredentials();
+                });
+            });
+
             services.AddMediatR(typeof(Register.Handler).Assembly);
 
             IdentityBuilder builder = services.AddIdentityCore<AppUser>()
@@ -84,6 +98,7 @@ namespace API
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseCors("CorsPolicy");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -91,7 +106,7 @@ namespace API
             
             Seed.SeedDataAsync(db,roleManager,userManager).Wait();
 
-            //ShowScraper.ScrapAsync(showRepo).Wait();
+            ShowScraper.ScrapAsync(showRepo).Wait();
         }
     }
 }

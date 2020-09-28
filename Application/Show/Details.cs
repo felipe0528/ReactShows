@@ -39,9 +39,10 @@ namespace Application.Show
                             {
                                 Id = show.id,
                                 IdAPI = show.idSite,
+                                Language = show.language,
                                 Name = show.name,
                                 PhotoURL = show.image != null ? show.image.medium : null,
-                                Chanel = show.network != null ? show.network.name : null,
+                                Channel = show.network != null ? show.network.name : null,
                                 Summary = show.summary,
                                 Rating = show.ratingValue,
                                 Genere = show.genresObject.Count > 0 ? String.Join(", ", show.genresObject) : null,

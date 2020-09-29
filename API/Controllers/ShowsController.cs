@@ -29,7 +29,7 @@ namespace API.Controllers
 
         // GET api/<ShowsController>/5
         [HttpGet("{id}")]
-        //[Authorize]
+        [Authorize]
         public async Task<ActionResult<ShowDto>> Details(int id)
         {
             return await Mediator.Send(new Details.Query { Id = id });

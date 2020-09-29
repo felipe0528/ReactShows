@@ -107,7 +107,6 @@ namespace API.Controllers
 
                 throw;
             }
-            command.Id = id;
         }
 
         [HttpDelete("{id}")]

@@ -56,7 +56,9 @@ namespace Infrastructure.Shows
                 throw new RestException(HttpStatusCode.InternalServerError, new { Show = "Could not delete" });
         }
 
-        public async Task<ShowsPresentation> FindAll(int? limit, int? offset, string sortedRating, string sortedChannel, string sortedGenere, string keywords, string language, string genere, string channel, string day, string time)
+        public async Task<ShowsPresentation> FindAll(int? limit, int? offset, string sortedRating,
+            string sortedChannel, string sortedGenere, string keywords, string language, 
+            string genere, string channel, string day, string time)
         {
             var queryable = _db.Shows.Include(x=>x.genresObject)
                 .Include(x=>x.schedule).ThenInclude(x=>x.daysOfWeek).Include(x=>x.image)
@@ -64,7 +66,7 @@ namespace Infrastructure.Shows
                 .Where(x=> String.IsNullOrEmpty(keywords) ? true : x.name.Contains(keywords) || x.summary.Contains(keywords))
                 .Where(x=> String.IsNullOrEmpty(language) ? true : x.language.Contains(language))
                 .Where(x=> String.IsNullOrEmpty(genere) ? true : x.genresObject.Any(y=>y.genereName.Contains(genere)))
-                .Where(x=> String.IsNullOrEmpty(channel) ? true : x.network.name.Contains(keywords))
+                .Where(x=> String.IsNullOrEmpty(channel) ? true : x.network.name.Contains(channel))
                 .Where(x=> String.IsNullOrEmpty(day) ? true : x.schedule.days.Any(x=>x.Contains(day)))
                 .Where(x=> String.IsNullOrEmpty(time) ? true : x.schedule.time.Contains(time))
                 .AsQueryable();

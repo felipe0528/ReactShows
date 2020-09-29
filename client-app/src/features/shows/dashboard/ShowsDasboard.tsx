@@ -5,6 +5,7 @@ import { RootStoreContext } from '../../../app/stores/rootStore';
 import { observer } from 'mobx-react-lite';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
 import InfiniteScroll from 'react-infinite-scroller';
+import { ShowFilter } from '../filter/ShowFilter';
 
 export const ShowsDasboard: React.FC = () => {
 
@@ -28,7 +29,7 @@ export const ShowsDasboard: React.FC = () => {
     return (
     <Grid>
       <Grid.Row  >
-        <h2>Show filters</h2>
+        <ShowFilter />
       </Grid.Row>
       <Grid.Row >
         <InfiniteScroll

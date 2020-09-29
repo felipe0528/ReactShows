@@ -64,7 +64,7 @@ namespace Infrastructure.Shows
                 .Where(x=> String.IsNullOrEmpty(keywords) ? true : x.name.Contains(keywords) || x.summary.Contains(keywords))
                 .Where(x=> String.IsNullOrEmpty(language) ? true : x.language.Contains(language))
                 .Where(x=> String.IsNullOrEmpty(genere) ? true : x.genresObject.Any(y=>y.genereName.Contains(genere)))
-                .Where(x=> String.IsNullOrEmpty(channel) ? true : x.summary.Contains(keywords))
+                .Where(x=> String.IsNullOrEmpty(channel) ? true : x.network.name.Contains(keywords))
                 .Where(x=> String.IsNullOrEmpty(day) ? true : x.schedule.days.Any(x=>x.Contains(day)))
                 .Where(x=> String.IsNullOrEmpty(time) ? true : x.schedule.time.Contains(time))
                 .AsQueryable();

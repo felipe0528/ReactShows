@@ -80,7 +80,8 @@ namespace API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             RoleManager<IdentityRole> roleManager,
             UserManager<AppUser> userManager,
-            DataContext db, IShowsRepository showRepo)
+            DataContext db, IShowsRepository showRepo
+            , ILoggerFactory loggerFactory)
         {
 
             if (env.IsDevelopment())
@@ -103,7 +104,9 @@ namespace API
             {
                 endpoints.MapControllers();
             });
-            
+
+            loggerFactory.AddFile("Logs/mylog-{Date}.txt");
+
             Seed.SeedDataAsync(db,roleManager,userManager).Wait();
 
             ShowScraper.ScrapAsync(showRepo).Wait();

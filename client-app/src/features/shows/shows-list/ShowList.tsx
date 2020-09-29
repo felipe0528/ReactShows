@@ -1,17 +1,16 @@
-import { observer } from 'mobx-react-lite';
 import React, { useContext } from 'react'
+import { observer } from 'mobx-react-lite';
+import { RootStoreContext } from '../../../app/stores/rootStore';
 import { Link } from 'react-router-dom';
 import { Button, Card, Grid, Icon, Image } from 'semantic-ui-react'
 import {IShow} from '../../../app/models/show'
-import ShowStoreContext from '../../../app/stores/showStore';
 
-export const ShowList: React.FC = () => {
-    const showStore = useContext(ShowStoreContext);
-    const showsEnvelop = showStore.showsEnvelop;
-
+const ShowList: React.FC = () => {
+    const rootStore = useContext(RootStoreContext);
+    const {showsDefault} = rootStore.showStore
     return (
         <Card.Group itemsPerRow={5}>
-            {showsEnvelop?.shows.map((show: IShow) =>(
+            {showsDefault.map((show: IShow) =>(
                 <Card key={show.idAPI}>
                     <Image src={show.photoURL} wrapped ui={false} />
                     <Card.Content>
@@ -40,7 +39,7 @@ export const ShowList: React.FC = () => {
                     </Grid.Column>
                     <Grid.Column>
                     <Button
-                            as={Link} to={`/shows/${show.id}`}
+                            as={Link} to={`/shows/${show.idAPI}`}
                             basic
                             color='blue'
                         content='View'

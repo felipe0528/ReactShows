@@ -1,3 +1,6 @@
+import { IActor } from "./actor";
+import { ISeason } from "./season";
+
 export interface IShow
 {
     id: number;
@@ -11,6 +14,6 @@ export interface IShow
     time :string;
     days :string;
     language: string;
-    //cast : Actor[];
-    //seasons: Season[];
+    cast : IActor[];
+    seasons: ISeason[];
 }

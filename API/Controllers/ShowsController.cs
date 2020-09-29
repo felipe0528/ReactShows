@@ -12,12 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    //[ApiController]
     public class ShowsController : BaseController
     {
         // GET: api/<ShowsController>
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         public async Task<ActionResult<List.ShowsEnvelope>> List(int? limit, int? offset, string sortedRating, 
             string sortedChannel, string sortedGenere, string keywords, string language, 
             string genere, string channel, string day, string time)

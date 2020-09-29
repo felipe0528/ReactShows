@@ -30,29 +30,31 @@ namespace Application.Show
             {
                 return Task.Run(()=>
                         {
-                            var show = _showRepo.FindById(request.Id);
-
-                            if (show == null)
-                                throw new RestException(HttpStatusCode.NotFound, new { Show = "Not found" });
-
-                            var showDto = new ShowDto
+                            try
                             {
-                                Id = show.id,
-                                IdAPI = show.idSite,
-                                Language = show.language,
-                                Name = show.name,
-                                PhotoURL = show.image != null ? show.image.medium : null,
-                                Channel = show.network != null ? show.network.name : null,
-                                Summary = show.summary,
-                                Rating = show.ratingValue,
-                                Genere = show.genresObject.Count > 0 ? String.Join(", ", show.genresObject) : null,
-                                Time = show.schedule != null ? show.schedule.time : null,
-                                Days = show.schedule != null ? String.Join(", ", show.schedule.daysOfWeek) : null,
-                                Seasons = show.seasons,
-                                Cast = show.cast
-                            };
-
-                            return showDto;
+                                var show = _showRepo.FindById(request.Id);
+                                var showDto = new ShowDto
+                                {
+                                    Id = show.id,
+                                    IdAPI = show.idSite,
+                                    Language = show.language,
+                                    Name = show.name,
+                                    PhotoURL = show.image != null ? show.image.medium : null,
+                                    Channel = show.network != null ? show.network.name : null,
+                                    Summary = show.summary,
+                                    Rating = show.ratingValue,
+                                    Genere = show.genresObject.Count > 0 ? String.Join(", ", show.genresObject) : null,
+                                    Time = show.schedule != null ? show.schedule.time : null,
+                                    Days = show.schedule != null ? String.Join(", ", show.schedule.daysOfWeek) : null,
+                                    Seasons = show.seasons,
+                                    Cast = show.cast
+                                };
+                                return showDto;
+                            }
+                            catch (Exception)
+                            {
+                                throw new RestException(HttpStatusCode.NotFound, new { Show = "Not found" });
+                            }
                         }
                     );
             }
